@@ -38,24 +38,23 @@ public class CliApplication {
                     L- Ledger
                     X- Exit 
                     Enter a Command: """;
-            System.out.println(homeMenu);
 
             System.out.println(homeMenu);
             userOption = scanner.nextLine();
 
 
 
-            switch (userOption){
-                case D:
+            switch (userOption.toUpperCase()){
+                case "D":
                     addDeposit(transations, scanner);
                     break;
-                case P:
+                case "P":
                    makePayment(transations, scanner);
                    break;
-                case L:
-                    displayLedger(); //Work on the ledger method first
+                case "L":
+                    displayLedger(transations); //Work on the ledger method first
                     break;
-                case X:
+                case "X":
                     System.out.println("Thank you for using Cli App");
                     break;
 
@@ -64,11 +63,14 @@ public class CliApplication {
 
             }
 
-        } while (userOption != "X");
+        } while (! userOption.equalsIgnoreCase("X"));
 
 
 
     }
+
+
+
 
 
     public static ArrayList<Transaction> loadTransactions(){
@@ -117,6 +119,18 @@ public class CliApplication {
     }
 
 
+    public static void addDeposit( ArrayList<Transaction> transactions, Scanner scanner) {
+
+
+
+    }
+
+
+    public static void makePayment( ArrayList<Transaction> transactions, Scanner scanner){
+
+    }
+
+
 
 
 
@@ -137,31 +151,35 @@ public class CliApplication {
                     R- Filter/Search reports 
                     H- Return to home screen
                     
-                    
-                    """;
+                    Enter a command:
+                                """;
             System.out.println(ledgerMenu);
             option = scanner.nextLine();
 
 
+            switch (option) {
+                case "A":
+                    displayAllTransactions(ledger);
+                    break;
+                case "D":
+                    displayDeposits(ledger);
+                    break;
+                case "P":
+                    displayPayments(ledger);
+                    break;
+                case "R":
+                    filterSearch(ledger);
+                    break;
+                case "H":
+                    return;
+                default:
+                    System.out.println("Invalid Entry");
 
 
-        switch (option){
-            case "A":
-                displayAllTransactions();
-            break;
-            case "D":
-                displayDeposits();
-                break;
-            case "P":
-                displayPayments();
-                break;
-            case "R":
-                filterSearch();
-                break;
-            case "H":
-                return;
-            default:
-                System.out.println("Invalid Entry");
+            }
+
+
+            System.out.println("What Would You Want To Do Next?");
 
 
         }while (true);
@@ -169,16 +187,48 @@ public class CliApplication {
 
 
 
+    }
+
+
+    public static void displayAllTransactions(ArrayList<Transaction> ledger){
+
+        System.out.println("======== All Transactions ========");
+        for (int i = ledger.size() - 1;  i >=0; i--){
+
+            Transaction t = ledger.get(i);
+
+            System.out.printf("%s | %s | %s | %s | $%.2f\n",
+                    t.getTransactionDate(),
+                    t.getTransactionTime(),
+                    t.getTransactionDescription(),
+                    t.getTransactionVendor(),
+                    t.getTransactionAmount());
 
 
 
 
 
+        }
 
 
 
 
     }
+
+
+    public static void displayDeposits(ArrayList<Transaction> ledger){
+
+    }
+
+    public static void displayPayments(ArrayList<Transaction> ledger){
+
+    }
+
+
+    public static void filterSearch(ArrayList<Transaction> ledger){
+
+    }
+
 
 
 
