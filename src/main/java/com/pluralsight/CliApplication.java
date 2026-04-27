@@ -6,22 +6,63 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 
+
+
 public class CliApplication {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        //Use console
 
 
         System.out.println("============ Welcome To Our Financial Manager App =============");
 
         ArrayList<Transaction> transations = loadTransactions();
+//        ArrayList<Transaction> displayLedger(ArrayList<Transaction>);
 
+
+        //Home Menu Screen
+
+        String userOption;
+
+        do{
+            String homeMenu = """
+                    Choose an option:
+                    D- Add Deposit
+                    P- Make payment
+                    L- Ledger
+                    X- Exit 
+                    Enter a Command: """;
+
+            System.out.println(homeMenu);
+            userOption = scanner.nextLine();
+
+
+
+            switch (userOption){
+                case D:
+                    addDeposit(transations, scanner);
+                    break;
+                case P:
+                    makePayment(transations, scanner);
+                    break;
+                case L:
+                    legder(); //Work on the ledger method first
+                    break;
+                case X:
+                    System.out.println("Thank you for using Cli App");
+                    break;
+
+                default:
+                    System.out.println("Invalid Input!");
+
+            }
+
+        } while (userOption != "X");
 
 
 
     }
-
-
-
 
 
     public static ArrayList<Transaction> loadTransactions(){
@@ -68,6 +109,11 @@ public class CliApplication {
 
 
     }
+
+
+public
+
+
 
 
 

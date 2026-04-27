@@ -2,7 +2,7 @@ package com.pluralsight;
 
 public class Transaction {
 
-    private String TransactionDate;
+    private String TransactionDate;  //Change date type to locale date
     private String TransactionTime;
     private String TransactionDescription;
     private String TransactionVendor;
