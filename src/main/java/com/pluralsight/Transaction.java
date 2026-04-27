@@ -1,14 +1,14 @@
 package com.pluralsight;
 
-public class transactions {
+public class Transaction {
 
     private String TransactionDate;
-    private int TransactionTime;
+    private String TransactionTime;
     private String TransactionDescription;
     private String TransactionVendor;
-    private float TransactionAmount;
+    private double TransactionAmount;
 
-    public transactions(String transactionDate, int transactionTime, String transactionDescription, String transactionVendor, float transactionAmount) {
+    public Transaction(String transactionDate, String transactionTime, String transactionDescription, String transactionVendor, double transactionAmount) {
         TransactionDate = transactionDate;
         TransactionTime = transactionTime;
         TransactionDescription = transactionDescription;
@@ -24,11 +24,11 @@ public class transactions {
         TransactionDate = transactionDate;
     }
 
-    public int getTransactionTime() {
+    public String getTransactionTime() {
         return TransactionTime;
     }
 
-    public void setTransactionTime(int transactionTime) {
+    public void setTransactionTime(String transactionTime) {
         TransactionTime = transactionTime;
     }
 
@@ -48,11 +48,11 @@ public class transactions {
         TransactionVendor = transactionVendor;
     }
 
-    public float getTransactionAmount() {
+    public double getTransactionAmount() {
         return TransactionAmount;
     }
 
-    public void setTransactionAmount(float transactionAmount) {
+    public void setTransactionAmount(double transactionAmount) {
         TransactionAmount = transactionAmount;
     }
 }
