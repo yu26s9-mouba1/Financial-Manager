@@ -1,14 +1,17 @@
 package com.pluralsight;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Transaction {
 
-    private String TransactionDate;  //Change date type to locale date
-    private String TransactionTime;
+    private LocalDate TransactionDate;  //Change date type to locale date
+    private LocalTime TransactionTime;
     private String TransactionDescription;
     private String TransactionVendor;
     private double TransactionAmount;
 
-    public Transaction(String transactionDate, String transactionTime, String transactionDescription, String transactionVendor, double transactionAmount) {
+    public Transaction(LocalDate transactionDate, LocalTime transactionTime, String transactionDescription, String transactionVendor, double transactionAmount) {
         TransactionDate = transactionDate;
         TransactionTime = transactionTime;
         TransactionDescription = transactionDescription;
@@ -16,19 +19,19 @@ public class Transaction {
         TransactionAmount = transactionAmount;
     }
 
-    public String getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return TransactionDate;
     }
 
-    public void setTransactionDate(String transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         TransactionDate = transactionDate;
     }
 
-    public String getTransactionTime() {
+    public LocalTime getTransactionTime() {
         return TransactionTime;
     }
 
-    public void setTransactionTime(String transactionTime) {
+    public void setTransactionTime(LocalTime transactionTime) {
         TransactionTime = transactionTime;
     }
 

@@ -1,9 +1,14 @@
 package com.pluralsight;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.io.Console;
+import java.io.*;
+
 
 
 
@@ -18,7 +23,7 @@ public class CliApplication {
         System.out.println("============ Welcome To Our Financial Manager App =============");
 
         ArrayList<Transaction> transations = loadTransactions();
-//        ArrayList<Transaction> displayLedger(ArrayList<Transaction>);
+        ArrayList<Transaction> ledger = new ArrayList<>();
 
 
         //Home Menu Screen
@@ -33,6 +38,7 @@ public class CliApplication {
                     L- Ledger
                     X- Exit 
                     Enter a Command: """;
+            System.out.println(homeMenu);
 
             System.out.println(homeMenu);
             userOption = scanner.nextLine();
@@ -44,10 +50,10 @@ public class CliApplication {
                     addDeposit(transations, scanner);
                     break;
                 case P:
-                    makePayment(transations, scanner);
-                    break;
+                   makePayment(transations, scanner);
+                   break;
                 case L:
-                    legder(); //Work on the ledger method first
+                    displayLedger(); //Work on the ledger method first
                     break;
                 case X:
                     System.out.println("Thank you for using Cli App");
@@ -99,8 +105,8 @@ public class CliApplication {
 
         String[] parts = line.split("\\|");
 
-        String date = parts[0];
-        String time = parts[1];
+        LocalDate date = LocalDate.parse(parts[0]);
+        LocalTime time  = LocalTime.parse(parts[1]);
         String description = parts[2];
         String vendor = parts[3];
         double amount = Double.parseDouble(parts[4]);
@@ -111,7 +117,71 @@ public class CliApplication {
     }
 
 
-public
+
+
+
+    public static void displayLedger(ArrayList<Transaction> ledger ){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("=======Ledger Screen ==========");
+
+        System.out.println("What Would You Like TO Do?");
+
+        String option;
+        do {
+
+            String ledgerMenu = """
+                    
+                    A- Display all transactions
+                    D- Display deposits
+                    P- Display payments
+                    R- Filter/Search reports 
+                    H- Return to home screen
+                    
+                    
+                    """;
+            System.out.println(ledgerMenu);
+            option = scanner.nextLine();
+
+
+
+
+        switch (option){
+            case "A":
+                displayAllTransactions();
+            break;
+            case "D":
+                displayDeposits();
+                break;
+            case "P":
+                displayPayments();
+                break;
+            case "R":
+                filterSearch();
+                break;
+            case "H":
+                return;
+            default:
+                System.out.println("Invalid Entry");
+
+
+        }while (true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
 
 
 
