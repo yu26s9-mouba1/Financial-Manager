@@ -122,6 +122,39 @@ public class CliApplication {
     public static void addDeposit( ArrayList<Transaction> transactions, Scanner scanner) {
 
 
+        try {
+
+            FileWriter fw = new FileWriter("data/transactions.csv", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            String text;
+
+            System.out.println("Please, enter date of transaction (yyyy-MM-dd): ");
+            String date = scanner.nextLine();
+
+            System.out.println("Please, enter time of transaction: (HH:mm:ss): ");
+            String time = scanner.nextLine();
+
+            System.out.println("Please, enter description: ");
+            String description = scanner.nextLine();
+
+            System.out.println("Please, enter vendor: ");
+            String vendor = scanner.nextLine();
+
+            System.out.println("Please, enter amount: ");
+            double amount = Double.parseDouble(scanner.nextLine());
+
+
+            text = String.format("%s|%s|%s|%s|$%.2f\n",
+            date, time, description, vendor, amount);
+
+            bw.write(text);
+            bw.close();
+
+
+        } catch (IOException e) {
+            System.out.println("There was an error:");
+            e.getMessage();
+        }
 
     }
 
