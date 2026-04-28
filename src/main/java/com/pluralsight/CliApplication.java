@@ -372,13 +372,13 @@ public class CliApplication {
                     displayMonthToDate(ledger);
                     break;
                 case "2":
-                    displayPreviousMonth();
+                    displayPreviousMonth(ledger);
                     break;
                 case "3":
-                    displayYearToDate();
+                    displayYearToDate(ledger);
                     break;
                 case "4":
-                    displayPreviousYear();
+                    displayPreviousYear(ledger);
                     break;
                 case "5":
                     searchByVendor();
@@ -470,17 +470,65 @@ public class CliApplication {
     public static void displayYearToDate(ArrayList<Transaction> ledger){
         System.out.println("=========== Year To Date Transactions ===============");
 
-        
+        LocalDate today = LocalDate.now();
+
+//        LocalDate YearToDate = today.withDayOfYear()
+
+        for (int i = ledger.size() - 1; i >= 0; i --){
+            Transaction t = ledger.get(i);
+
+            if (t.getTransactionDate().getYear() == today.getYear()){
+
+                System.out.printf(
+
+                        "%s | %s | %s | %s | $%.2f\n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
+
+
+            }
+        }
+
+
 
 
     }
 
-    public static void displayPreviousYear(){
+    public static void displayPreviousYear(ArrayList<Transaction> ledger){
 
+        System.out.println("========= Previous Year Transactions ==========");
+        LocalDate today = LocalDate.now();
+
+        int previousYear = LocalDate.now().getYear() - 1;
+
+        for (int i = ledger.size() -1 ; i >= 0; i --) {
+
+            Transaction t = ledger.get(i);
+
+            if (t.getTransactionDate().getYear() == previousYear) {
+
+                System.out.printf(
+
+                        "%s | %s | %s | %s | $%.2f\n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
+
+            }
+
+
+        }
     }
 
 
     public static void searchByVendor(){
+
+
 
     }
 
