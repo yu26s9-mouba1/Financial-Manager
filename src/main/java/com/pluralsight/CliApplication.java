@@ -294,6 +294,22 @@ public class CliApplication {
 
     public static void displayDeposits(ArrayList<Transaction> ledger){
 
+
+        System.out.println("======== All Deposits ==============");
+        for (int i = ledger.size() - 1;  i >=0; i--) {
+
+            Transaction t = ledger.get(i);
+
+            System.out.printf("%s | %s | %s | %s | $%.2f\n",
+                    t.getTransactionDate(),
+                    t.getTransactionTime(),
+                    t.getTransactionDescription(),
+                    t.getTransactionVendor(),
+                    t.getTransactionAmount());
+
+
+        }
+
     }
 
     public static void displayPayments(ArrayList<Transaction> ledger){
