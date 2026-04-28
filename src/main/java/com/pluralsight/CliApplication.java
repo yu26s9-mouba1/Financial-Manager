@@ -424,16 +424,53 @@ public class CliApplication {
         }
 
 
+
+
+
+
+    }
+
+
+    public static void displayPreviousMonth(ArrayList<Transaction> ledger){
+
+        System.out.println("========= Previous Month Transactions ================");
+
+        LocalDate today = LocalDate.now();
+
+        LocalDate previousMonth = today.minusMonths(1);
+
+        for (int i = ledger.size() -1 ; i >= 0; i --) {
+
+            Transaction t = ledger.get(i);
+
+            if (t.getTransactionDate().getMonthValue() == previousMonth.getMonthValue()
+            && t.getTransactionDate().getYear() == previousMonth.getYear());
+
+            System.out.printf(
+
+                            "%s | %s | %s | %s | $%.2f\n",
+                    t.getTransactionDate(),
+                    t.getTransactionTime(),
+                    t.getTransactionDescription(),
+                    t.getTransactionVendor(),
+                    t.getTransactionAmount());
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+    public static void displayYearToDate(ArrayList<Transaction> ledger){
+        System.out.println("=========== Year To Date Transactions ===============");
+
         
-    }
-
-
-    public static void displayPreviousMonth(){
-
-    }
-
-
-    public static void displayYearToDate(){
 
 
     }
