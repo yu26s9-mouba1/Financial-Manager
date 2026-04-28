@@ -22,7 +22,7 @@ public class CliApplication {
 
         System.out.println("============ Welcome To Our Financial Manager App =============");
 
-        ArrayList<Transaction> transations = loadTransactions();
+        ArrayList<Transaction> transations = loadTransactions();   //////////////////////////
         ArrayList<Transaction> ledger = new ArrayList<>();
 
 
@@ -89,7 +89,7 @@ public class CliApplication {
 
                 }
 
-                Transaction t = getTransaction(line);
+                Transaction t = getTransaction(line);  //////////////////////////////
                 transactions.add(t);
 
             }
@@ -111,7 +111,7 @@ public class CliApplication {
         LocalTime time  = LocalTime.parse(parts[1]);
         String description = parts[2];
         String vendor = parts[3];
-        double amount = Double.parseDouble(parts[4]);
+        double amount = Double.parseDouble(parts[4]);  //////////////////////////////////////
 
         return new Transaction(date, time, description, vendor, amount);
 
@@ -141,7 +141,7 @@ public class CliApplication {
             System.out.println("Please, enter vendor: ");
             String vendor = scanner.nextLine();
 
-            System.out.println("Please, enter amount: ");
+            System.out.printf("Please, enter amount: ");
             double amount = Double.parseDouble(scanner.nextLine());
 
 
@@ -182,7 +182,7 @@ public class CliApplication {
             System.out.println("Please, enter vendor: ");
             String vendor = scanner.nextLine();
 
-            System.out.println("Please, enter amount of payment: ");
+            System.out.printf("Please, enter amount of payment: ");
             double amount = Double.parseDouble(scanner.nextLine());
             amount *= -1;
 
@@ -300,26 +300,153 @@ public class CliApplication {
 
             Transaction t = ledger.get(i);
 
-            System.out.printf("%s | %s | %s | %s | $%.2f\n",
-                    t.getTransactionDate(),
-                    t.getTransactionTime(),
-                    t.getTransactionDescription(),
-                    t.getTransactionVendor(),
-                    t.getTransactionAmount());
+            if (t.getTransactionAmount() > 0) {
 
+                System.out.printf("%s | %s | %s | %s | $%.2f\n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
 
+            }
         }
 
     }
 
     public static void displayPayments(ArrayList<Transaction> ledger){
+        System.out.println("========== Payment History ============");
+
+        for (int i = ledger.size() - 1;  i >=0; i--) {
+
+            Transaction t = ledger.get(i);
+
+            if (t.getTransactionAmount() < 0) {
+
+                System.out.printf("%s | %s | %s | %s | $%.2f\n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
+
+            }
+        }
+
+
+
+
+
 
     }
 
 
     public static void filterSearch(ArrayList<Transaction> ledger){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("======= You are now on the report screen =======");
+        System.out.println(" Choose A Report To View ");
+
+        String option;
+
+        do{
+            String menu = """
+                    
+                    1- Month to date
+                    2- Previous Month
+                    3- Year to Date 
+                    4- Previous Year
+                    5- Search by Vendor
+                    0- Return to ledger page
+                    H- Return to home page
+                    
+                    Enter a Command:
+                    """;
+
+            System.out.println(menu);
+            option = scanner. nextLine().trim().toUpperCase();
+
+
+            switch (option){
+                case "1":
+                    displayMonthToDate(ledger);
+                    break;
+                case "2":
+                    displayPreviousMonth();
+                    break;
+                case "3":
+                    displayYearToDate();
+                    break;
+                case "4":
+                    displayPreviousYear();
+                    break;
+                case "5":
+                    searchByVendor();
+                    break;
+                case "0":
+                    displayLedger(ledger);
+                case "H":
+                    return;
+                default:
+                    System.out.println("Invalid Input, try again!");
+            }
+
+        } while(true);
+
+
 
     }
+
+
+
+
+    public static void displayMonthToDate(ArrayList<Transaction> ledger){
+        System.out.println("====== Month To Date Transactions ========");
+
+        LocalDate today = LocalDate.now();
+
+        for (int i = ledger.size() -1 ; i >= 0; i --){
+
+            Transaction t = ledger.get(i);
+
+             if (t.getTransactionDate().getMonthValue() == today.getMonthValue()
+                    && t.getTransactionDate().getYear() == today.getYear()){
+                 System.out.printf(
+                         "%s | %s | %s | %s | $%.2f\n",
+                         t.getTransactionDate(),
+                         t.getTransactionTime(),
+                         t.getTransactionDescription(),
+                         t.getTransactionVendor(),
+                         t.getTransactionAmount());
+
+             }
+
+        }
+
+
+        
+    }
+
+
+    public static void displayPreviousMonth(){
+
+    }
+
+
+    public static void displayYearToDate(){
+
+
+    }
+
+    public static void displayPreviousYear(){
+
+    }
+
+
+    public static void searchByVendor(){
+
+    }
+
 
 
 
