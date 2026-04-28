@@ -1,12 +1,12 @@
 package com.pluralsight;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.io.Console;
 import java.io.*;
 
 
@@ -14,15 +14,15 @@ import java.io.*;
 
 
 public class CliApplication {
+
+    private static final String PRODUCT_FILE = "data/transactions.csv";
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         //Use console
 
-
-        System.out.println("============ Welcome To Our Financial Manager App =============");
-
-        ArrayList<Transaction> transations = loadTransactions();   //////////////////////////
+        ArrayList<Transaction> transactions = loadTransactions();   //////////////////////////
         ArrayList<Transaction> ledger = new ArrayList<>();
 
 
@@ -31,35 +31,37 @@ public class CliApplication {
         String userOption;
 
         do{
+            System.out.println("============ Welcome To Our Financial Manager App =============");
             String homeMenu = """
                     Choose an option:
                     D- Add Deposit
-                    P- Make payment
+                    P- Add Payment
                     L- Ledger
-                    X- Exit 
-                    Enter a Command: """;
+                    X- Exit
+                    """;
 
             System.out.println(homeMenu);
-            userOption = scanner.nextLine();
+            userOption = Console.promptForString("Enter Command: ").trim().toUpperCase();
+//            userOption = scanner.nextLine();
 
 
 
             switch (userOption.toUpperCase()){
                 case "D":
-                    addDeposit(transations, scanner);
+                    addDeposit(transactions, scanner);
                     break;
                 case "P":
-                   makePayment(transations, scanner);
+                   addPayment(transactions, scanner);
                    break;
                 case "L":
-                    displayLedger(transations); //Work on the ledger method first
+                    displayLedger(transactions); //Work on the ledger method first
                     break;
                 case "X":
                     System.out.println("Thank you for using Cli App");
                     break;
 
                 default:
-                    System.out.println("Invalid Input!");
+                    System.out.println("Invalid Entry, Please try again!");
 
             }
 
@@ -76,7 +78,7 @@ public class CliApplication {
     public static ArrayList<Transaction> loadTransactions(){
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("data/transactions.csv"));
+            BufferedReader br = new BufferedReader(new FileReader(PRODUCT_FILE));
 
             br.readLine(); //Making sure the header is skipped
 
@@ -125,47 +127,52 @@ public class CliApplication {
         try {
 
 
-            FileWriter fw = new FileWriter("data/transactions.csv", true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            String text;
+                FileWriter fw = new FileWriter(PRODUCT_FILE, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                String text;
 
-            System.out.println("Please, enter date of transaction (yyyy-MM-dd): ");
-            String date = scanner.nextLine();
+                System.out.println("Please, enter date of transaction (yyyy-MM-dd): ");
+                String date = scanner.nextLine();
 
-            System.out.println("Please, enter time of transaction (HH:mm:ss): ");
-            String time = scanner.nextLine();
+                System.out.println("Please, enter time of transaction (HH:mm:ss): ");
+                String time = scanner.nextLine();
 
-            System.out.println("Please, enter description: ");
-            String description = scanner.nextLine();
+                System.out.println("Please, enter description: ");
+                String description = scanner.nextLine();
 
-            System.out.println("Please, enter vendor: ");
-            String vendor = scanner.nextLine();
+                System.out.println("Please, enter vendor: ");
+                String vendor = scanner.nextLine();
 
-            System.out.printf("Please, enter amount: ");
-            double amount = Double.parseDouble(scanner.nextLine());
+                System.out.println("Please, enter amount: ");
+                double amount = Double.parseDouble(scanner.nextLine());
 
+                System.out.println("Deposit Successfully Added!");
 
-            text = String.format("%s|%s|%s|%s|$%.2f\n",
-            date, time, description, vendor, amount);
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate parsedDate = LocalDate.parse(date, fmt);
+            String formattedDate = parsedDate.format(fmt);
 
-            bw.write(text);
-            bw.close();
+            text = String.format("%s|%s|%s|%s|%.2f\n",
+                    formattedDate, time, description, vendor, amount);
+
+                bw.write(text);
+                bw.close();
 
 
         } catch (IOException e) {
             System.out.println("There was an error:");
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
 
     }
 
 
-    public static void makePayment( ArrayList<Transaction> transactions, Scanner scanner){
+    public static void addPayment( ArrayList<Transaction> transactions, Scanner scanner){
 
         try{
 
 
-            FileWriter fw = new FileWriter("data/transactions.csv", true);
+            FileWriter fw = new FileWriter(PRODUCT_FILE, true);
             BufferedWriter bw = new BufferedWriter(fw);
 
             String text;
@@ -187,10 +194,15 @@ public class CliApplication {
             amount *= -1;
 
 
+            System.out.println("Payment Successfully Added!");
 
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate parsedDate = LocalDate.parse(date, fmt);
+            String formattedDate = parsedDate.format(fmt);
 
-            text = String.format("%s|%s|%s|%s|$%.2f\n",
-                    date, time, description, vendor, amount);
+            text = String.format("%s|%s|%s|%s|%.2f\n",
+                    formattedDate, time, description, vendor, amount);
+
 
             bw.write(text);
             bw.close();
@@ -198,7 +210,7 @@ public class CliApplication {
 
         } catch (IOException e) {
             System.out.println("There was an error:");
-            e.getMessage();
+            System.out.println(e.getMessage());
 
 
         }
@@ -212,25 +224,24 @@ public class CliApplication {
 
     public static void displayLedger(ArrayList<Transaction> ledger ){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=======Ledger Screen ==========");
+        System.out.println("======== Ledger Screen ========");
 
         System.out.println("What Would You Like TO Do?");
 
         String option;
+
         do {
 
             String ledgerMenu = """
-                    
                     A- Display all transactions
                     D- Display deposits
                     P- Display payments
                     R- Filter/Search reports 
                     H- Return to home screen
-                    
-                    Enter a command:
-                                """;
+                                         """;
+
             System.out.println(ledgerMenu);
-            option = scanner.nextLine();
+            option = Console.promptForString("Enter command: ").trim().toUpperCase();
 
 
             switch (option) {
@@ -249,13 +260,13 @@ public class CliApplication {
                 case "H":
                     return;
                 default:
-                    System.out.println("Invalid Entry");
+                    System.out.println("Invalid Entry, Please try again!");
 
 
             }
 
-
-            System.out.println("What Would You Want To Do Next?");
+            System.out.println();
+            System.out.println("What Would You Like To Do Next?");
 
 
         }while (true);
@@ -273,7 +284,7 @@ public class CliApplication {
 
             Transaction t = ledger.get(i);
 
-            System.out.printf("%s | %s | %s | %s | $%.2f\n",
+            System.out.printf("%s|%s|%s|%s|%.2f\n",
                     t.getTransactionDate(),
                     t.getTransactionTime(),
                     t.getTransactionDescription(),
@@ -295,14 +306,15 @@ public class CliApplication {
     public static void displayDeposits(ArrayList<Transaction> ledger){
 
 
-        System.out.println("======== All Deposits ==============");
+        System.out.println("======== Deposit History ==============");
+
         for (int i = ledger.size() - 1;  i >=0; i--) {
 
             Transaction t = ledger.get(i);
 
             if (t.getTransactionAmount() > 0) {
 
-                System.out.printf("%s | %s | %s | %s | $%.2f\n",
+                System.out.printf("%s|%s|%s|%s|%.2f\n",
                         t.getTransactionDate(),
                         t.getTransactionTime(),
                         t.getTransactionDescription(),
@@ -323,7 +335,7 @@ public class CliApplication {
 
             if (t.getTransactionAmount() < 0) {
 
-                System.out.printf("%s | %s | %s | %s | $%.2f\n",
+                System.out.printf("%s | %s | %s | %s | %.2f\n",
                         t.getTransactionDate(),
                         t.getTransactionTime(),
                         t.getTransactionDescription(),
@@ -344,8 +356,8 @@ public class CliApplication {
     public static void filterSearch(ArrayList<Transaction> ledger){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("======= You are now on the report screen =======");
-        System.out.println(" Choose A Report To View ");
+        System.out.println("======= You Are Now On The Report Screen =======");
+        System.out.println(" Choose A Report To View: ");
 
         String option;
 
@@ -360,11 +372,10 @@ public class CliApplication {
                     0- Return to ledger page
                     H- Return to home page
                     
-                    Enter a Command:
                     """;
 
             System.out.println(menu);
-            option = scanner. nextLine().trim().toUpperCase();
+            option = Console.promptForString("Enter Command: ").trim().toUpperCase();
 
 
             switch (option){
@@ -381,10 +392,11 @@ public class CliApplication {
                     displayPreviousYear(ledger);
                     break;
                 case "5":
-                    searchByVendor();
+                    searchByVendor(ledger);
                     break;
                 case "0":
-                    displayLedger(ledger);
+                    return;
+//                     displayLedger(ledger);
                 case "H":
                     return;
                 default:
@@ -412,7 +424,7 @@ public class CliApplication {
              if (t.getTransactionDate().getMonthValue() == today.getMonthValue()
                     && t.getTransactionDate().getYear() == today.getYear()){
                  System.out.printf(
-                         "%s | %s | %s | %s | $%.2f\n",
+                         "%s|%s|%s|%s|%.2f\n",
                          t.getTransactionDate(),
                          t.getTransactionTime(),
                          t.getTransactionDescription(),
@@ -448,7 +460,7 @@ public class CliApplication {
 
             System.out.printf(
 
-                            "%s | %s | %s | %s | $%.2f\n",
+                            "%s|%s|%s|%s|%.2f\n",
                     t.getTransactionDate(),
                     t.getTransactionTime(),
                     t.getTransactionDescription(),
@@ -481,7 +493,7 @@ public class CliApplication {
 
                 System.out.printf(
 
-                        "%s | %s | %s | %s | $%.2f\n",
+                        "%s|%s|%s|%s|%.2f\n",
                         t.getTransactionDate(),
                         t.getTransactionTime(),
                         t.getTransactionDescription(),
@@ -512,7 +524,7 @@ public class CliApplication {
 
                 System.out.printf(
 
-                        "%s | %s | %s | %s | $%.2f\n",
+                        "%s|%s|%s|%s|$%.2f\n",
                         t.getTransactionDate(),
                         t.getTransactionTime(),
                         t.getTransactionDescription(),
@@ -526,21 +538,44 @@ public class CliApplication {
     }
 
 
-    public static void searchByVendor(){
+    public static void searchByVendor(ArrayList<Transaction> ledger){
+        System.out.println("======= Search By Vendor =======");
+        Scanner scanner = new Scanner(System.in);
+
+
+        System.out.println("Please, enter vendor name: ");
+        String vendorName = scanner.nextLine().toLowerCase();
+
+        boolean found = false;
+
+        for (Transaction t : ledger){
+
+            if (t.getTransactionVendor().toLowerCase().contains(vendorName)){
+
+                System.out.println(t.getTransactionVendor() + " Transactions: ");
+
+                System.out.printf(
+
+                        "%s|%s|%s|%s|%.2f\n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
+
+                found = true;
+
+
+            }
+
+        }
+
+        if (!found){
+            System.out.println("Sorry, transaction not found");
+        }
 
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
