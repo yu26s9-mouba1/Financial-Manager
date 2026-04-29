@@ -18,12 +18,11 @@ public class CliApplication {
     private static final String PRODUCT_FILE = "data/transactions.csv";
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        //Use console
 
-        ArrayList<Transaction> transactions = loadTransactions();   //////////////////////////
-        ArrayList<Transaction> ledger = new ArrayList<>();
+
+        ArrayList<Transaction> transactions = loadTransactions();
+
 
 
         //Home Menu Screen
@@ -42,22 +41,22 @@ public class CliApplication {
 
             System.out.println(homeMenu);
             userOption = Console.promptForString("Enter Command: ").trim().toUpperCase();
-//            userOption = scanner.nextLine();
+
 
 
 
             switch (userOption.toUpperCase()){
                 case "D":
-                    addDeposit(transactions, scanner);
+                    addDeposit(transactions);
                     break;
                 case "P":
-                   addPayment(transactions, scanner);
+                   addPayment(transactions);
                    break;
                 case "L":
-                    displayLedger(transactions); //Work on the ledger method first
+                    displayLedger(transactions);
                     break;
                 case "X":
-                    System.out.println("Thank you for using Cli App");
+                    System.out.println("Thank you for using Cli App!");
                     break;
 
                 default:
@@ -80,7 +79,7 @@ public class CliApplication {
         try {
             BufferedReader br = new BufferedReader(new FileReader(PRODUCT_FILE));
 
-            br.readLine(); //Making sure the header is skipped
+            br.readLine();
 
 
             String line;
@@ -91,7 +90,7 @@ public class CliApplication {
 
                 }
 
-                Transaction t = getTransaction(line);  //////////////////////////////
+                Transaction t = getTransaction(line);
                 transactions.add(t);
 
             }
@@ -99,7 +98,7 @@ public class CliApplication {
 
 
         } catch ( IOException e){
-            System.out.println("There was an error reading the file: " + e.getMessage());
+            System.out.println("There was an error : " + e.getMessage());
         }
 
         return transactions;
@@ -113,7 +112,7 @@ public class CliApplication {
         LocalTime time  = LocalTime.parse(parts[1]);
         String description = parts[2];
         String vendor = parts[3];
-        double amount = Double.parseDouble(parts[4]);  //////////////////////////////////////
+        double amount = Double.parseDouble(parts[4]);
 
         return new Transaction(date, time, description, vendor, amount);
 
@@ -121,7 +120,7 @@ public class CliApplication {
     }
 
 
-    public static void addDeposit( ArrayList<Transaction> transactions, Scanner scanner) {
+    public static void addDeposit( ArrayList<Transaction> transactions) {
 
 
         try {
@@ -131,21 +130,18 @@ public class CliApplication {
                 BufferedWriter bw = new BufferedWriter(fw);
                 String text;
 
-                System.out.println("Please, enter date of transaction (yyyy-MM-dd): ");
-                String date = scanner.nextLine();
 
-                System.out.println("Please, enter time of transaction (HH:mm:ss): ");
-                String time = scanner.nextLine();
+                String date = Console.promptForString(" Please enter date (yyyy-MM--dd): ");
 
-                System.out.println("Please, enter description: ");
-                String description = scanner.nextLine();
+                String time = Console.promptForString("Please, enter time (HH:mm:ss): ");
 
-                System.out.println("Please, enter vendor: ");
-                String vendor = scanner.nextLine();
+                String description = Console.promptForString("Please, enter description: ");
 
-                System.out.println("Please, enter amount: ");
-                double amount = Double.parseDouble(scanner.nextLine());
+                String vendor = Console.promptForString("Please, enter vendor: ");
 
+                double amount = Console.promptForDouble("Please, enter amount: ");
+
+                System.out.println();
                 System.out.println("Deposit Successfully Added!");
 
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -167,7 +163,7 @@ public class CliApplication {
     }
 
 
-    public static void addPayment( ArrayList<Transaction> transactions, Scanner scanner){
+    public static void addPayment( ArrayList<Transaction> transactions){
 
         try{
 
@@ -177,26 +173,21 @@ public class CliApplication {
 
             String text;
 
-            System.out.println("Please, enter date of payment (yyyy-MM-dd): ");
-            String date = scanner.nextLine();
+            String date = Console.promptForString("Please, enter date (yyyy-MM--dd): ");
 
-            System.out.println("Please, enter time of payment (HH:mm:ss): ");
-            String time = scanner.nextLine();
+            String time = Console.promptForString("Please, enter time (HH:mm:ss): ");
 
-            System.out.println("Please, enter description of payment: ");
-            String description = scanner.nextLine();
+            String description = Console.promptForString("Please, enter description: ");
 
-            System.out.println("Please, enter vendor: ");
-            String vendor = scanner.nextLine();
+            String vendor = Console.promptForString("Please, enter vendor: ");
 
-            System.out.printf("Please, enter amount of payment: ");
-            double amount = Double.parseDouble(scanner.nextLine());
+            double amount = Console.promptForDouble("Please, enter amount: ");
             amount *= -1;
 
-
+            System.out.println();
             System.out.println("Payment Successfully Added!");
 
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");   //# 3 format not working, application crashing
             LocalDate parsedDate = LocalDate.parse(date, fmt);
             String formattedDate = parsedDate.format(fmt);
 
@@ -223,7 +214,7 @@ public class CliApplication {
 
 
     public static void displayLedger(ArrayList<Transaction> ledger ){
-        Scanner scanner = new Scanner(System.in);
+
         System.out.println("======== Ledger Screen ========");
 
         System.out.println("What Would You Like TO Do?");
@@ -238,7 +229,7 @@ public class CliApplication {
                     P- Display payments
                     R- Filter/Search reports 
                     H- Return to home screen
-                                         """;
+                    """;
 
             System.out.println(ledgerMenu);
             option = Console.promptForString("Enter command: ").trim().toUpperCase();
@@ -369,10 +360,13 @@ public class CliApplication {
                     3- Year to Date 
                     4- Previous Year
                     5- Search by Vendor
+                    6- Custom Search
                     0- Return to ledger page
-                    H- Return to home page
+                    H- Return to home menu
+
                     
                     """;
+            //         H- Return to home menu   #1 Taking me back to the ledger screen instead of home screen
 
             System.out.println(menu);
             option = Console.promptForString("Enter Command: ").trim().toUpperCase();
@@ -393,6 +387,9 @@ public class CliApplication {
                     break;
                 case "5":
                     searchByVendor(ledger);
+                    break;
+                case "6":
+                    displayCustomSearch(ledger);
                     break;
                 case "0":
                     return;
@@ -512,7 +509,7 @@ public class CliApplication {
     public static void displayPreviousYear(ArrayList<Transaction> ledger){
 
         System.out.println("========= Previous Year Transactions ==========");
-        LocalDate today = LocalDate.now();
+//        LocalDate today = LocalDate.now();
 
         int previousYear = LocalDate.now().getYear() - 1;
 
@@ -540,11 +537,9 @@ public class CliApplication {
 
     public static void searchByVendor(ArrayList<Transaction> ledger){
         System.out.println("======= Search By Vendor =======");
-        Scanner scanner = new Scanner(System.in);
 
 
-        System.out.println("Please, enter vendor name: ");
-        String vendorName = scanner.nextLine().toLowerCase();
+        String vendorName = Console.promptForString("Please, enter vendor name: ");
 
         boolean found = false;
 
@@ -552,7 +547,7 @@ public class CliApplication {
 
             if (t.getTransactionVendor().toLowerCase().contains(vendorName)){
 
-                System.out.println(t.getTransactionVendor() + " Transactions: ");
+                System.out.println(t.getTransactionVendor() + "'s" + " Transactions: ");
 
                 System.out.printf(
 
@@ -571,11 +566,113 @@ public class CliApplication {
         }
 
         if (!found){
-            System.out.println("Sorry, transaction not found");
+            System.out.println("Sorry, vendor not found, try again: ");
         }
 
 
 
+
     }
+
+
+
+    public static void displayCustomSearch(ArrayList<Transaction> ledger){
+
+        System.out.println("========= Custom Search View =============");
+        System.out.println();
+
+
+        String startDate = Console.promptForString("Please, enter start date of transaction (YYYY-MM-dd): ").trim();
+        System.out.println();
+        String endDate = Console.promptForString("Please, enter end date of transaction (YYYY-MM-dd): ").trim();
+        System.out.println();
+        String description = Console.promptForString("Please, enter description of transaction: ").trim();
+        System.out.println();
+        String amount = Console.promptForString("Please, enter amount of transaction: ");
+        System.out.println();
+        String vendor = Console.promptForString("Please, enter vendor of transaction: ");
+
+
+
+//        LocalDate today = LocalDate.now();
+        LocalDate parsedStartDate = null;
+        LocalDate parsedEndDate = null;
+        Double parsedAmount = null;
+
+        if (! startDate.isEmpty()){
+            parsedStartDate = LocalDate.parse(startDate);
+
+
+        }
+
+        if (! endDate.isEmpty()){
+            parsedEndDate = LocalDate.parse(endDate);
+
+
+        }
+
+        if (!amount.isEmpty()){
+            parsedAmount = Double.parseDouble(amount);
+        }
+
+
+
+        for(Transaction t : ledger){
+
+            boolean matches = true;
+
+            if (parsedStartDate != null && t.getTransactionDate().isBefore(parsedStartDate)){
+                matches = false;
+
+            }
+
+
+            if (parsedEndDate != null && t.getTransactionDate().isAfter(parsedEndDate)){
+                matches = false;
+            }
+
+            if (! description.isEmpty() && !t.getTransactionDescription().toLowerCase().contains(description.toLowerCase())){
+                matches = false;
+            }
+
+
+            if (!vendor.isEmpty() && !t.getTransactionVendor().toLowerCase().contains(vendor.toLowerCase())){
+
+                matches = false;
+
+            }
+
+
+            if (parsedAmount != null && Double.compare(t.getTransactionAmount(),  parsedAmount) !=0) {
+                matches = false;
+
+
+            }
+
+
+            if (matches){
+                System.out.println();
+                System.out.println("*********Your transaction is listed below:************* ");
+                System.out.printf( "%s | %s | %s | %s | %.2f%n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
+
+
+
+
+            }
+
+
+        }
+
+        }
+
+
+
+
+
 
 }
