@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.io.*;
 
 
-public class CliApplication {
+public class FlexSpendApp {
 
     private static final String PRODUCT_FILE = "data/transactions.csv";
 
@@ -41,12 +41,12 @@ public class CliApplication {
         do {
 
             String homeMenu = """
-                         What Would You Like To Do Today?
-                              D- Add Deposit
-                              P- Add Payment
-                              L- Ledger
-                              X- Exit
-                         """;
+                    What Would You Like To Do Today?
+                         D- Add Deposit
+                         P- Add Payment
+                         L- Ledger
+                         X- Exit
+                    """;
 
             System.out.println(homeMenu);
             userOption = Console.promptForString(" Enter Command: ").trim().toUpperCase();
