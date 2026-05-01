@@ -1,7 +1,9 @@
 package com.pluralsight;
+import java.util.InputMismatchException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.InputMismatchException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Console {
@@ -105,11 +107,32 @@ public class Console {
     }
 
 
-    public static LocalDate promptForDate(String prompt) {
+    public static String promptForDate(String prompt) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        System.out.println(prompt);
-        String input = scanner.nextLine();
-        return LocalDate.parse(input);
+
+        while (true){
+            try {
+
+                String dateInput = promptForString(prompt);
+                LocalDate parsedDate = LocalDate.parse(dateInput, fmt);
+                return parsedDate.format(fmt);
+
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid Date, please enter yyyy-MM-dd: ");
+
+            }
+
+        }
+
+
+
+
+
+
+
+
+
 
 
     }
