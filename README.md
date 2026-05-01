@@ -1,4 +1,4 @@
-# Accounting Ledger Application Project
+# Flex Spend - Accounting Ledger Application Project
 
 **Project Overview**
 
@@ -118,7 +118,7 @@ Open the Financial-Manager project folder
 **Locate:**
 
 
-CliApplication.java
+FlexSpendApp.java
 
 
 Run the main method
