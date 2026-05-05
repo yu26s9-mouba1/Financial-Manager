@@ -1,5 +1,4 @@
 package com.pluralsight;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
@@ -149,7 +148,7 @@ public class FlexSpendApp {
             System.out.println("** Payment Successfully Added! **");
 
             text = String.format("%s|%s|%s|%s|%.2f\n",
-                    date, time, description, vendor, amount);
+                    date, time, description, vendor, - amount);
 
             FileWriter fw = new FileWriter(PRODUCT_FILE, true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -366,7 +365,7 @@ public class FlexSpendApp {
                     break;
                 case "0":
                     return;
-//                     displayLedger(ledger);
+                //                     displayLedger(ledger);
                 case "H":
                     return;
                 default:
@@ -384,7 +383,7 @@ public class FlexSpendApp {
     public static void displayMonthToDate(ArrayList<Transaction> ledger) {
         System.out.println("============================== Month To Date Transactions ============================");
 
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.of(2026, 4, 30);
 
         for (int i = ledger.size() - 1; i >= 0; i--) {
 
@@ -423,18 +422,18 @@ public class FlexSpendApp {
             Transaction t = ledger.get(i);
 
             if (t.getTransactionDate().getMonthValue() == previousMonth.getMonthValue()
-                    && t.getTransactionDate().getYear() == previousMonth.getYear()) ;
+                    && t.getTransactionDate().getYear() == previousMonth.getYear()) {
 
-            System.out.printf(
+                System.out.printf(
 
-                    "%s|%s|%s|%s|%.2f\n",
-                    t.getTransactionDate(),
-                    t.getTransactionTime(),
-                    t.getTransactionDescription(),
-                    t.getTransactionVendor(),
-                    t.getTransactionAmount());
+                        "%s|%s|%s|%s|%.2f\n",
+                        t.getTransactionDate(),
+                        t.getTransactionTime(),
+                        t.getTransactionDescription(),
+                        t.getTransactionVendor(),
+                        t.getTransactionAmount());
 
-
+            }
         }
 
 
@@ -513,13 +512,15 @@ public class FlexSpendApp {
 
             boolean found = false;
 
+            System.out.println("*** " + vendorName + "'s" + " Transactions: " + "***");
+
             for (Transaction t : ledger) {
 
-                if (t.getTransactionVendor().toLowerCase().contains(vendorName)) {
-
-                    System.out.println("*** " + t.getTransactionVendor() + "'s" + " Transactions: " + "***");
+                if (t.getTransactionVendor().toLowerCase().contains(vendorName.toLowerCase())) {
 
                     System.out.printf(
+
+
 
                             "%s|%s|%s|%s|%.2f\n",
                             t.getTransactionDate(),
@@ -582,6 +583,8 @@ public class FlexSpendApp {
             LocalDate parsedEndDate = null;
             Double parsedAmount = null;
 
+            System.out.println("============ History Of Transactions For Your Search ===============================");
+
             if (!startDate.isEmpty()) {
                 parsedStartDate = LocalDate.parse(startDate);
             }
@@ -626,16 +629,20 @@ public class FlexSpendApp {
                 }
 
 
+
+
                 if (matches) {
-                    System.out.println();
-                    System.out.println("****************** Your transactions Are listed below ******************* ");
+//
                     System.out.printf("%s | %s | %s | %s | %.2f%n",
                             t.getTransactionDate(),
                             t.getTransactionTime(),
                             t.getTransactionDescription(),
                             t.getTransactionVendor(),
                             t.getTransactionAmount());
+
                 }
+
+
             }
 
 

@@ -1,5 +1,4 @@
 package com.pluralsight;
-
 import java.util.InputMismatchException;
 import java.time.LocalDate;
 import java.time.LocalTime;
